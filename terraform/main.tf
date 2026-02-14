@@ -166,8 +166,16 @@ resource "helm_release" "backstage" {
   dynamic "set" {
     for_each = var.backstage_image_repository != "" ? [1] : []
     content {
+      name  = "backstage.image.registry"
+      value = var.backstage_image_registry
+    }
+  }
+
+  dynamic "set" {
+    for_each = var.backstage_image_repository != "" ? [1] : []
+    content {
       name  = "backstage.image.repository"
-      value = "${var.backstage_image_registry}/${var.backstage_image_repository}"
+      value = var.backstage_image_repository
     }
   }
 
@@ -187,9 +195,29 @@ resource "helm_release" "backstage" {
   }
 
   # ---------------------------------------------------------------------------
+  # The Helm chart sets command: ["node", "packages/backend"] which strips
+  # the --config args from the Dockerfile CMD. We must explicitly pass them
+  # via backstage.args so app-config.production.yaml is loaded.
+  # ---------------------------------------------------------------------------
+  set {
+    name  = "backstage.args[0]"
+    value = "--config"
+  }
+  set {
+    name  = "backstage.args[1]"
+    value = "app-config.yaml"
+  }
+  set {
+    name  = "backstage.args[2]"
+    value = "--config"
+  }
+  set {
+    name  = "backstage.args[3]"
+    value = "app-config.production.yaml"
+  }
+
+  # ---------------------------------------------------------------------------
   # Dynamic config via environment variables (read by app-config.production.yaml)
-  # This avoids using backstage.appConfig which overrides the container CMD
-  # and breaks the baked-in config files.
   # ---------------------------------------------------------------------------
 
   # APP_BASE_URL and BACKEND_BASE_URL - used by app-config.production.yaml

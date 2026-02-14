@@ -10,6 +10,10 @@ backend:
     port: 7007
     host: 0.0.0.0
 
+  # Disable upgrade-insecure-requests since we serve over plain HTTP
+  csp:
+    upgrade-insecure-requests: false
+
   # config options: https://node-postgres.com/apis/client
   database:
     client: pg
