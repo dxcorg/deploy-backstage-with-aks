@@ -25,6 +25,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   resource_group_name = azurerm_resource_group.main[0].name
   dns_prefix          = var.aks_cluster_name
   kubernetes_version  = "1.35"
+  oidc_issuer_enabled = true
 
   default_node_pool {
     name       = "default"
