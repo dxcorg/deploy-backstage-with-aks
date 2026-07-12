@@ -238,6 +238,16 @@ resource "helm_release" "backstage" {
     name  = "backstage.extraEnvVars[1].value"
     value = local.backstage_base_url
   }
+  set {
+    name  = "backstage.extraEnvVars[2].name"
+    value = "POSTGRES_DB"
+  }
+  set {
+    name  = "backstage.extraEnvVars[2].value"
+    value = "postgres"
+  }
+
+
 
   # GitHub auth credentials (from Kubernetes secret)
   dynamic "set" {
