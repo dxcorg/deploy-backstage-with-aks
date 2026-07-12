@@ -22,7 +22,7 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      database: backstagedb
+      database: ${POSTGRES_DB}
 
   auth:
     dangerouslyDisableDefaultAuthPolicy: false
