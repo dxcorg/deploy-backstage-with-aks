@@ -148,7 +148,7 @@ resource "kubernetes_secret" "postgresql" {
 resource "helm_release" "backstage" {
   name             = var.backstage_release_name
   namespace        = kubernetes_namespace.backstage.metadata[0].name
-  repository       = "https://github.com/backstage/charts"
+  repository       = "https://backstage.github.io/charts"
   chart            = "backstage"
   version          = var.backstage_chart_version
   create_namespace = false
