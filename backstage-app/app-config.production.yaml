@@ -30,7 +30,8 @@ auth:
   environment: production
   providers:
     #guest: {}
-    guest: dangerouslyAllowGuestDevelopmentAccess: true
+    guest:
+      dangerouslyAllowGuestDevelopmentAccess: true
     github:
       production:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
