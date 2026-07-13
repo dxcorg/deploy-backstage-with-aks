@@ -22,7 +22,6 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-      #database: ${POSTGRES_DB}
 
   auth:
     dangerouslyDisableDefaultAuthPolicy: false
@@ -30,14 +29,15 @@ backend:
 auth:
   environment: production
   providers:
-    guest: {}
-    #github:
-      #production:
-        #clientId: ${AUTH_GITHUB_CLIENT_ID}
-        #clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        #signIn:
-          #resolvers:
-            #- resolver: usernameMatchingUserEntityName
+    #guest: {}
+    guest: dangerouslyAllowGuestDevelopmentAccess: true
+    github:
+      production:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        signIn:
+          resolvers:
+            - resolver: usernameMatchingUserEntityName
 
 catalog:
   locations:
