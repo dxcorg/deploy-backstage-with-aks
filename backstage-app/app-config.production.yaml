@@ -52,3 +52,12 @@ catalog:
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
+  providers:
+    githubOrg:
+      id: production
+      githubUrl: https://github.com
+      orgs: ['dxcorg']
+      schedule:
+        initialDelay: { seconds: 30 }
+        frequency: { minutes: 30 }  # hours: 1
+        timeout: { minutes: 3 }
