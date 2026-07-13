@@ -40,6 +40,13 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'docker' # Alternatives - 'local'
+  publisher:
+    type: 'local' # Alternatives include 'googleGcs', 'awsS3', and other supported publishers. See configuration documentation for the full list.
+    
 catalog:
   locations:
     - type: file
