@@ -268,10 +268,11 @@ resource "helm_release" "backstage" {
   }
 
   # GitHub token for scaffolder/integrations (from Kubernetes secret)
+  # Use index 0 if github_auth is disabled, index 1 if enabled
   dynamic "set" {
     for_each = var.github_token != "" ? [1] : []
     content {
-      name  = "backstage.extraEnvVarsSecrets[1]"
+      name  = var.github_auth_enabled ? "backstage.extraEnvVarsSecrets[1]" : "backstage.extraEnvVarsSecrets[0]"
       value = kubernetes_secret.github_token[0].metadata[0].name
     }
   }
