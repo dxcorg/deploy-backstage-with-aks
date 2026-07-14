@@ -1,6 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles((_theme: Theme) => ({
   svg: {
     width: 'auto',
     height: 30,

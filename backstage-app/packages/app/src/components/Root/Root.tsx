@@ -29,7 +29,7 @@ import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 
-const useSidebarLogoStyles = makeStyles((theme: Theme) => ({
+const useSidebarLogoStyles = makeStyles((_theme: Theme) => ({
   root: {
     width: sidebarConfig.drawerWidthClosed,
     height: 3 * sidebarConfig.logoHeight,
