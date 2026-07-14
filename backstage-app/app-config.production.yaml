@@ -40,6 +40,11 @@ auth:
           resolvers:
             - resolver: usernameMatchingUserEntityName
 
+integrations:
+  github:
+    - host: github.com
+      token: ${BACKSTAGE_SCAFFOLDER_GITHUB_TOKEN} # This token will be injected as an environment variable in your AKS deployment
+  
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
