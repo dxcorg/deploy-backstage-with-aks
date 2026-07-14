@@ -35,9 +35,9 @@ const useSidebarLogoStyles = makeStyles((theme: Theme) => ({
     height: 3 * sidebarConfig.logoHeight,
     display: 'flex',
     flexFlow: 'row nowrap',
+    flexDirection: 'row',
     alignItems: 'center',
     marginBottom: -14,
-    backgroundColor: theme.palette.primary.dark,
   },
   link: {
     width: sidebarConfig.drawerWidthClosed,
@@ -52,7 +52,8 @@ const SidebarLogo = () => {
   return (
     <div className={classes.root}>
       <Link to="/" underline="none" className={classes.link} aria-label="Home">
-        {isOpen ? <LogoFull /> : <LogoIcon />}
+        {isOpen ? <LogoFull /> : <LogoIcon />} 
+
       </Link>
     </div>
   );
