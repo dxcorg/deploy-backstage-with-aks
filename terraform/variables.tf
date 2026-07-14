@@ -145,6 +145,13 @@ variable "github_client_secret" {
   default     = ""
 }
 
+variable "github_token" {
+  description = "GitHub Personal Access Token for scaffolder/templates (repo, workflow, admin:org scopes)"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "postgresql_enabled" {
   description = "Deploy PostgreSQL as subchart (recommended for dev/demo)"
   type        = bool

@@ -118,6 +118,24 @@ resource "kubernetes_secret" "github_auth" {
 }
 
 # ------------------------------------------------------------------------------
+# GitHub Token secret (for scaffolder/integrations)
+# ------------------------------------------------------------------------------
+resource "kubernetes_secret" "github_token" {
+  count = var.github_token != "" ? 1 : 0
+
+  metadata {
+    name      = "${var.backstage_release_name}-github-token"
+    namespace = kubernetes_namespace.backstage.metadata[0].name
+  }
+
+  data = {
+    GITHUB_TOKEN = var.github_token
+  }
+
+  type = "Opaque"
+}
+
+# ------------------------------------------------------------------------------
 # PostgreSQL credentials secret (Bitnami chart expects user-password + admin-password)
 # ------------------------------------------------------------------------------
 locals {
@@ -246,6 +264,15 @@ resource "helm_release" "backstage" {
     content {
       name  = "backstage.extraEnvVarsSecrets[0]"
       value = kubernetes_secret.github_auth[0].metadata[0].name
+    }
+  }
+
+  # GitHub token for scaffolder/integrations (from Kubernetes secret)
+  dynamic "set" {
+    for_each = var.github_token != "" ? [1] : []
+    content {
+      name  = "backstage.extraEnvVarsSecrets[1]"
+      value = kubernetes_secret.github_token[0].metadata[0].name
     }
   }
 
