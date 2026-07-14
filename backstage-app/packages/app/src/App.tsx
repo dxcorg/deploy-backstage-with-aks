@@ -53,7 +53,7 @@ const app = createApp({
       title: 'ADNOC Theme',
       variant: 'light' as const,
       Provider: ({ children }: { children: React.ReactNode }) => (
-        <UnifiedThemeProvider theme={adnocBackstageTheme} noCssBaseline>
+        <UnifiedThemeProvider theme={adnocBackstageTheme}>
           <CssBaseline />
           {children}
         </UnifiedThemeProvider>

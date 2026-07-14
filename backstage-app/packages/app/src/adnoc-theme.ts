@@ -451,6 +451,7 @@ export const adnocUnifiedThemeOptions = {
   typography: {
     fontFamily,
     fontSize: 16,
+    htmlFontSize: 16,
     h1: { fontFamily, fontWeight: 700, fontSize: fontSizes['4xl'], lineHeight: 1.25 },
     h2: { fontFamily, fontWeight: 700, fontSize: fontSizes['3xl'], lineHeight: 1.25 },
     h3: { fontFamily, fontWeight: 600, fontSize: fontSizes['2xl'], lineHeight: 1.25 },
