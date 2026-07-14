@@ -112,7 +112,6 @@ resource "kubernetes_secret" "github_auth" {
   data = {
     AUTH_GITHUB_CLIENT_ID     = var.github_client_id
     AUTH_GITHUB_CLIENT_SECRET = var.github_client_secret
-    BACKSTAGE_SCAFFOLDER_GITHUB_TOKEN = var.backstage_scaffolder_github_token
   }
 
   type = "Opaque"

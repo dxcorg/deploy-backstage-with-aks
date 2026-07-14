@@ -158,12 +158,6 @@ variable "postgresql_password" {
   default     = ""
 }
 
-variable "backstage_scaffolder_github_token" {
-  type        = string
-  description = "GitHub PAT used by Backstage Scaffolder to publish repositories."
-  default     = ""
-  sensitive   = true
-}
 # ------------------------------------------------------------------------------
 # Tags
 # ------------------------------------------------------------------------------
