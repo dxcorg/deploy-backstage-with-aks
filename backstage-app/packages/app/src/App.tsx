@@ -39,27 +39,9 @@ import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
 import { NotificationsPage } from '@backstage/plugin-notifications';
 import { SignalsDisplay } from '@backstage/plugin-signals';
-import { UnifiedThemeProvider, createUnifiedTheme } from '@backstage/theme';
-import { CssBaseline } from '@material-ui/core';
-import { adnocUnifiedThemeOptions } from './adnoc-theme';
-
-const adnocBackstageTheme = createUnifiedTheme(adnocUnifiedThemeOptions);
 
 const app = createApp({
   apis,
-  themes: [
-    {
-      id: 'adnoc-theme',
-      title: 'ADNOC Theme',
-      variant: 'light' as const,
-      Provider: ({ children }: { children: React.ReactNode }) => (
-        <UnifiedThemeProvider theme={adnocBackstageTheme}>
-          <CssBaseline />
-          {children}
-        </UnifiedThemeProvider>
-      ),
-    },
-  ],
   bindRoutes({ bind }) {
     bind(catalogPlugin.externalRoutes, {
       createComponent: scaffolderPlugin.routes.root,
