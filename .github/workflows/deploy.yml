@@ -156,6 +156,7 @@ jobs:
             -var="github_auth_enabled=${{ steps.tfvars.outputs.github_auth_enabled }}" \
             -var="github_client_id=${TF_VAR_github_client_id:-}" \
             -var="github_client_secret=${TF_VAR_github_client_secret:-}" \
+            -var="github_token=${TF_VAR_github_token:-}" \
             -var="backstage_base_url_override=${{ steps.tfvars.outputs.backstage_base_url_override }}" \
             -var="backstage_image_registry=${{ steps.tfvars.outputs.backstage_image_registry }}" \
             -var="backstage_image_repository=${{ steps.tfvars.outputs.backstage_image_repository }}" \
@@ -185,6 +186,7 @@ jobs:
             -var="github_auth_enabled=${{ steps.tfvars.outputs.github_auth_enabled }}" \
             -var="github_client_id=${TF_VAR_github_client_id:-}" \
             -var="github_client_secret=${TF_VAR_github_client_secret:-}" \
+            -var="github_token=${TF_VAR_github_token:-}" \
             -var="backstage_base_url_override=${{ steps.tfvars.outputs.backstage_base_url_override }}" \
             -var="backstage_image_registry=${{ steps.tfvars.outputs.backstage_image_registry }}" \
             -var="backstage_image_repository=${{ steps.tfvars.outputs.backstage_image_repository }}" \
@@ -226,12 +228,13 @@ jobs:
             -var="github_auth_enabled=${{ steps.tfvars.outputs.github_auth_enabled }}" \
             -var="github_client_id=${TF_VAR_github_client_id:-}" \
             -var="github_client_secret=${TF_VAR_github_client_secret:-}" \
+            -var="github_token=${TF_VAR_github_token:-}" \
             -var="backstage_base_url_override=${{ steps.tfvars.outputs.backstage_base_url_override }}" \
             -var="backstage_image_registry=${{ steps.tfvars.outputs.backstage_image_registry }}" \
             -var="backstage_image_repository=${{ steps.tfvars.outputs.backstage_image_repository }}" \
             -var="backstage_image_tag=${{ steps.tfvars.outputs.backstage_image_tag }}" \
             -var="postgresql_password=${TF_VAR_postgresql_password:-}" \
-            -var="kube_config_path=$HOME/.kube/config" \ 
+            -var="kube_config_path=$HOME/.kube/config"
 
       - name: Update baseUrl for LoadBalancer (nip.io)
         working-directory: ./terraform
@@ -264,6 +267,7 @@ jobs:
             -var="github_auth_enabled=${{ steps.tfvars.outputs.github_auth_enabled }}" \
             -var="github_client_id=${TF_VAR_github_client_id:-}" \
             -var="github_client_secret=${TF_VAR_github_client_secret:-}" \
+            -var="github_token=${TF_VAR_github_token:-}" \
             -var="backstage_base_url_override=$BASE_URL" \
             -var="backstage_image_registry=${{ steps.tfvars.outputs.backstage_image_registry }}" \
             -var="backstage_image_repository=${{ steps.tfvars.outputs.backstage_image_repository }}" \
