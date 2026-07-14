@@ -239,6 +239,15 @@ resource "helm_release" "backstage" {
     value = local.backstage_base_url
   }
 
+  # Scaffolder GitHub PAT - used by integrations.github in app-config.production.yaml
+  set_sensitive {
+    name  = "backstage.extraEnvVars[2].name"
+    value = "BACKSTAGE_SCAFFOLDER_GITHUB_TOKEN"
+  }
+  set_sensitive {
+    name  = "backstage.extraEnvVars[2].value"
+    value = var.backstage_scaffolder_github_token
+  }
 
   # GitHub auth credentials (from Kubernetes secret)
   dynamic "set" {
