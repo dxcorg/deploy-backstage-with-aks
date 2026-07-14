@@ -99,6 +99,24 @@ spec:
             allowedOwners:
               - dxcorg
 
+    - title: Azure Deployment Credentials
+      description: |
+        ⚠️ IMPORTANT: After creating the repository, you MUST add Azure credentials as GitHub Secrets.
+        
+        Required secrets for Azure deployment:
+        • AZURE_CLIENT_ID
+        • AZURE_CLIENT_SECRET  
+        • AZURE_TENANT_ID
+        • AZURE_SUBSCRIPTION_ID
+        
+        These will be used by the GitHub Actions workflow to deploy infrastructure and the application to Azure.
+      properties:
+        azureCredentialsConfirmed:
+          title: I understand I need to add Azure credentials as GitHub Secrets after creation
+          type: boolean
+          default: false
+          ui:widget: checkbox
+
   # 2. Execution Steps
   steps:
     - id: fetch-skeleton
@@ -140,3 +158,35 @@ spec:
       - title: Open in Catalog
         icon: catalog
         entityRef: ${{ steps['register-catalog'].output.entityRef }}
+      - title: ⚙️ Setup Azure Secrets (REQUIRED)
+        url: ${{ steps['publish-repo'].output.remoteUrl }}/settings/secrets/actions
+        description: Add Azure credentials before deploying
+      - title: View GitHub Actions
+        url: ${{ steps['publish-repo'].output.remoteUrl }}/actions
+    text:
+      - title: '🎉 Repository Created Successfully!'
+        content: |
+          Your repository **${{ parameters.name }}** has been created and registered in the catalog.
+          
+      - title: '⚠️ NEXT STEPS REQUIRED - Setup Azure Credentials'
+        content: |
+          Before you can deploy the application, you MUST add the following secrets to your repository:
+          
+          **1. Go to Repository Secrets:**
+          ${{ steps['publish-repo'].output.remoteUrl }}/settings/secrets/actions
+          
+          **2. Add these 4 secrets:**
+          
+          | Secret Name | Description |
+          |-------------|-------------|
+          | `AZURE_CLIENT_ID` | Azure Service Principal Client ID |
+          | `AZURE_CLIENT_SECRET` | Azure Service Principal Secret |
+          | `AZURE_TENANT_ID` | Azure AD Tenant ID |
+          | `AZURE_SUBSCRIPTION_ID` | Azure Subscription ID |
+          
+          **3. Trigger Deployment:**
+          - Go to Actions tab: ${{ steps['publish-repo'].output.remoteUrl }}/actions
+          - Select "Deploy Infrastructure & App to Azure"
+          - Click "Run workflow"
+          
+          **Your app will be deployed to:** `https://${{ parameters.webAppName }}.azurewebsites.net`
