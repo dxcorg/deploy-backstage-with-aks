@@ -56,7 +56,7 @@ catalog:
       rules:
         - allow: [Template]
     - type: dir
-      target: ./templates
+      target: ./examples
       rules:
         - allow: [Template]
     - type: file
