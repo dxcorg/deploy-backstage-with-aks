@@ -55,8 +55,8 @@ catalog:
       target: ./examples/template/template.yaml
       rules:
         - allow: [Template]
-    - type: file
-      target: ./examples/adnoc-template/template.yaml
+    - type: dir
+      target: ./templates
       rules:
         - allow: [Template]
     - type: file
