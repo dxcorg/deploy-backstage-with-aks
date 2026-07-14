@@ -56,6 +56,10 @@ catalog:
       rules:
         - allow: [Template]
     - type: file
+      target: ./examples/adnoc-template/template.yaml
+      rules:
+        - allow: [Template]
+    - type: file
       target: ./examples/org.yaml
       rules:
         - allow: [User, Group]
