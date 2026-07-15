@@ -2,15 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>${{ values.name }} - Azure Web App</title>
+  <title>ADNOC Backstage Portal</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    .card { background: #1e293b; padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); max-width: 500px; text-align: center; border: 1px solid #334155; }
-    h1 { color: #38bdf8; margin-top: 0; }
-    .badge { display: inline-block; background: #0284c7; color: white; padding: 4px 12px; border-radius: 9999px; font-size: 0.85rem; font-weight: bold; margin-top: 1rem; }
-    p { color: #94a3b8; line-height: 1.6; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color-bg:        #0b1120;
+      --color-surface:   #131f35;
+      --color-border:    #1e3050;
+      --color-primary:   #0072bc;
+      --color-accent:    #00aeef;
+      --color-success:   #22c55e;
+      --color-warning:   #f59e0b;
+      --color-text:      #e2e8f0;
+      --color-muted:     #7a9bbf;
+      --radius:          12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    app-root { display: block; }
   </style>
 </head>
 <body>

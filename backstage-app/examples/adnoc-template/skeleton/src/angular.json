@@ -15,12 +15,27 @@
             "outputPath": "dist/demo-app",
             "index": "app/index.html",
             "browser": "app/main.ts",
-            "tsConfig": "tsconfig.json"
+            "polyfills": ["zone.js"],
+            "tsConfig": "tsconfig.json",
+            "assets": [
+              { "glob": "favicon.ico", "input": "app", "output": "/" }
+            ]
           },
           "configurations": {
             "production": {
               "outputHashing": "all",
               "optimization": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "demo-app:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "demo-app:build:production"
             }
           }
         }

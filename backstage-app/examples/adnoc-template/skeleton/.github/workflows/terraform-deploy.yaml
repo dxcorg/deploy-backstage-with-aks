@@ -59,7 +59,7 @@ jobs:
       - name: Install Dependencies & Build Angular App
         working-directory: ./src
         run: |
-          npm ci
+          npm install
           npm run build -- --configuration production
 
       - name: Log in to Azure CLI
