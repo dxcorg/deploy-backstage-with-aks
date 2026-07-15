@@ -19,14 +19,14 @@ resource "azurerm_linux_web_app" "webapp" {
 
   site_config {
     application_stack {
-      # Injects Node 24 LTS or selected runtime dynamically
+      # Dynamically sets runtime based on template selection (Node.js or .NET)
       node_version = split("|", "${{ values.runtime }}")[0] == "node" ? split("|", "${{ values.runtime }}")[1] : null
       dotnet_version = split("|", "${{ values.runtime }}")[0] == "dotnet" ? split("|", "${{ values.runtime }}")[1] : null
     }
   }
 
   app_settings = {
-    "WEBSITE_NODE_DEFAULT_VERSION" = "~24"
+    "WEBSITE_NODE_DEFAULT_VERSION" = split("|", "${{ values.runtime }}")[0] == "node" ? "~${split("-", split("|", "${{ values.runtime }}")[1])[0]}" : null
     "NODE_ENV"                     = "production"
   }
 }

@@ -47,17 +47,19 @@ spec:
           title: Runtime Stack
           type: string
           description: The application stack to deploy on Azure App Service.
-          default: "node|24-lts"
+          default: "node|22-lts"
           enum:
             - "node|24-lts"
-            - "node|20-lts"
-            - "dotnet|8.0"
-            - "dotnet|9.0"
+            - "node|22-lts"
+            - "dotnet|10"
+            - "dotnet|9"
+            - "dotnet|8"
           enumNames:
             - "Node.js 24 LTS"
-            - "Node.js 20 LTS"
-            - ".NET 8.0"
-            - ".NET 9.0"
+            - "Node.js 22 LTS"
+            - ".NET 10 (LTS)"
+            - ".NET 9 (STS)"
+            - ".NET 8 (LTS)"
         location:
           title: Azure Region
           type: string
@@ -159,10 +161,10 @@ spec:
         icon: catalog
         entityRef: ${{ steps['register-catalog'].output.entityRef }}
       - title: ⚙️ Setup Azure Secrets (REQUIRED)
-        url: ${{ steps['publish-repo'].output.remoteUrl }}/settings/secrets/actions
+        url: ${{ steps['publish-repo'].output.repoContentsUrl | replace('/tree/main', '') }}/settings/secrets/actions
         description: Add Azure credentials before deploying
       - title: View GitHub Actions
-        url: ${{ steps['publish-repo'].output.remoteUrl }}/actions
+        url: ${{ steps['publish-repo'].output.repoContentsUrl | replace('/tree/main', '') }}/actions
     text:
       - title: '🎉 Repository Created Successfully!'
         content: |
@@ -173,7 +175,7 @@ spec:
           Before you can deploy the application, you MUST add the following secrets to your repository:
           
           **1. Go to Repository Secrets:**
-          ${{ steps['publish-repo'].output.remoteUrl }}/settings/secrets/actions
+          ${{ steps['publish-repo'].output.repoContentsUrl | replace('/tree/main', '') }}/settings/secrets/actions
           
           **2. Add these 4 secrets:**
           
@@ -185,7 +187,7 @@ spec:
           | `AZURE_SUBSCRIPTION_ID` | Azure Subscription ID |
           
           **3. Trigger Deployment:**
-          - Go to Actions tab: ${{ steps['publish-repo'].output.remoteUrl }}/actions
+          - Go to Actions tab: ${{ steps['publish-repo'].output.repoContentsUrl | replace('/tree/main', '') }}/actions
           - Select "Deploy Infrastructure & App to Azure"
           - Click "Run workflow"
           
