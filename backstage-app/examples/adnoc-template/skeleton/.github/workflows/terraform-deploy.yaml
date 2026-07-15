@@ -48,7 +48,7 @@ jobs:
         working-directory: ./terraform
         run: |
           APP_NAME=$(terraform output -raw webapp_name)
-          echo "webapp_name=$APP_NAME" >> ${{ '${{' }} GITHUB_OUTPUT }}
+          echo "webapp_name=$APP_NAME" >> $GITHUB_OUTPUT
 
       # --- Application Build & Deploy ---
       - name: Setup Node.js
