@@ -47,16 +47,16 @@ spec:
           title: Runtime Stack
           type: string
           description: The application stack to deploy on Azure App Service.
-          default: "node|20-lts"
+          default: "node|22-lts"
           enum:
-            - "node|20-lts"
-            - "node|18-lts"
+            - "node|24-lts"
+            - "node|22-lts"
             - "dotnet|10"
             - "dotnet|9"
             - "dotnet|8"
           enumNames:
-            - "Node.js 20 LTS"
-            - "Node.js 18 LTS"
+            - "Node.js 24 LTS"
+            - "Node.js 22 LTS"
             - ".NET 10 (LTS)"
             - ".NET 9 (STS)"
             - ".NET 8 (LTS)"
