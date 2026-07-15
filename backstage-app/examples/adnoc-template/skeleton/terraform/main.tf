@@ -18,6 +18,9 @@ resource "azurerm_linux_web_app" "webapp" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
+    # always_on requires Basic tier or higher (not compatible with Free/F1)
+    always_on = "${{ values.sku }}" != "F1" ? true : false
+    
     application_stack {
       # Dynamically sets runtime based on template selection (Node.js or .NET)
       node_version = split("|", "${{ values.runtime }}")[0] == "node" ? split("|", "${{ values.runtime }}")[1] : null

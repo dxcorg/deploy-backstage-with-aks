@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_CLIENT_ID: ${{ '${{' }} secrets.AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ '${{' }} secrets.AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ '${{' }} secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ '${{' }} secrets.AZURE_TENANT_ID }}
       TF_WORKING_DIR: './terraform'
 
     steps:
@@ -48,13 +48,13 @@ jobs:
         working-directory: ./terraform
         run: |
           APP_NAME=$(terraform output -raw webapp_name)
-          echo "webapp_name=$APP_NAME" >> $GITHUB_OUTPUT
+          echo "webapp_name=$APP_NAME" >> ${{ '${{' }} GITHUB_OUTPUT }}
 
       # --- Application Build & Deploy ---
-      - name: Setup Node.js (v22 LTS)
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: './src/package-lock.json'
 
@@ -67,13 +67,13 @@ jobs:
       - name: Log in to Azure CLI
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          client-id: ${{ '${{' }} secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ '${{' }} secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ '${{' }} secrets.AZURE_SUBSCRIPTION_ID }}
+          client-secret: ${{ '${{' }} secrets.AZURE_CLIENT_SECRET }}
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ steps.terraform-output.outputs.webapp_name }}
+          app-name: ${{ '${{' }} steps.terraform-output.outputs.webapp_name }}
           package: './src/dist/demo-app/browser'
