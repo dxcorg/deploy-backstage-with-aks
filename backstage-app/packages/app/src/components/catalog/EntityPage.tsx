@@ -60,7 +60,7 @@ import {
 import {
   EntityGithubActionsContent,
   isGithubActionsAvailable,
-} from '@backstage/plugin-github-actions';
+} from '@backstage-community/plugin-github-actions';
 import {
   EntityAzurePipelinesContent,
   isAzureDevOpsAvailable,
@@ -126,7 +126,7 @@ const entityWarningContent = (
         </Grid>
       </EntitySwitch.Case>
     </EntitySwitch>
-  </>
+  </> 
 );
 
 const overviewContent = (
