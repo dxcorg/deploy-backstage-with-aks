@@ -45,7 +45,13 @@ integrations:
     - host: github.com
       # Token needs the following scopes: repo, workflow, admin:org (for creating repos in dxcorg)
       token: ${GITHUB_TOKEN} # This token will be injected as an environment variable in your AKS deployment
-  
+  azureDevOps:
+    - host: dev.azure.com
+      # Personal Access Token with Build (Read) and Code (Read) scopes
+      # You can create a token at: https://dev.azure.com/{organization}/_usersSettings/tokens
+      token: ${AZURE_DEVOPS_TOKEN}
+      # organization: your-organization # Optional: specify your Azure DevOps organization
+
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:

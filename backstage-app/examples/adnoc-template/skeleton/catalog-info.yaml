@@ -6,6 +6,10 @@ metadata:
   annotations:
     github.com/project-slug: ${{ values.destination.owner }}/${{ values.destination.repo }}
     backstage.io/techdocs-ref: dir:.
+    # Azue DevOps Pipeline
+    #dev.azure.com/project-repo: 'your-project/your-repo'
+    #dev.azure.com/build-definition: 'your-build-definition-name'
+    
 spec:
   type: website
   lifecycle: experimental
