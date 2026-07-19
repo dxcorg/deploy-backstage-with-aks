@@ -1,0 +1,178 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: azure-devops-vm-deployment
+  title: Deploy Azure Virtual Machine via Azure DevOps
+  description: Triggers an Azure DevOps CI/CD pipeline to provision a new Azure Linux or Windows Virtual Machine using Terraform/Bicep.
+  tags:
+    - azure
+    - vm
+    - azure-devops
+    - infrastructure
+spec:
+  owner: user:guest
+  type: service
+
+  # 1. User Input Form
+  parameters:
+    - title: VM Identification & Catalog Tracking
+      required:
+        - name
+        - description
+        - owner
+      properties:
+        name:
+          title: VM Component Name
+          type: string
+          description: Unique name to identify this VM inside the Backstage Catalog (alphanumeric and hyphens only).
+          ui:autofocus: true
+        description:
+          title: Purpose / Description
+          type: string
+          description: Why is this VM being deployed? (e.g., Database Server for Production, Test Node).
+        owner:
+          title: Owner
+          type: string
+          description: Team or individual responsible for this VM.
+          default: "user:guest"
+
+    - title: Azure Virtual Machine Specifications
+      required:
+        - vmName
+        - location
+        - vmSize
+        - osImage
+        - adminUsername
+      properties:
+        vmName:
+          title: Azure Resource Name (VM Name)
+          type: string
+          description: The actual hostname/resource name inside the Azure Portal (max 15 chars for Windows, 64 for Linux).
+        location:
+          title: Azure Region
+          type: string
+          default: "westeurope"
+          enum:
+            - "westeurope"
+            - "eastus"
+            - "northeurope"
+            - "uaenorth"
+          enumNames:
+            - "West Europe"
+            - "East US"
+            - "North Europe"
+            - "UAE North"
+        vmSize:
+          title: Virtual Machine Size (SKU)
+          type: string
+          default: "Standard_B2s"
+          enum:
+            - "Standard_B1s"
+            - "Standard_B2s"
+            - "Standard_D2s_v3"
+            - "Standard_D4s_v3"
+          enumNames:
+            - "Standard B1s (1 vCPU, 1 GB RAM - Burstable)"
+            - "Standard B2s (2 vCPU, 4 GB RAM - Burstable)"
+            - "Standard D2s v3 (2 vCPU, 8 GB RAM - General Purpose)"
+            - "Standard D4s v3 (4 vCPU, 16 GB RAM - General Purpose)"
+        osImage:
+          title: Operating System
+          type: string
+          default: "ubuntu-2204"
+          enum:
+            - "ubuntu-2204"
+            - "ubuntu-2004"
+            - "windows-2022"
+            - "windows-2019"
+          enumNames:
+            - "Ubuntu Linux 22.04 LTS"
+            - "Ubuntu Linux 20.04 LTS"
+            - "Windows Server 2022 Datacenter"
+            - "Windows Server 2019 Datacenter"
+        adminUsername:
+          title: Admin Username
+          type: string
+          default: "azureadmin"
+          description: Username for SSH or RDP access.
+
+    - title: Azure DevOps Pipeline Configuration
+      required:
+        - organization
+        - project
+        - pipelineId
+      properties:
+        organization:
+          title: Azure DevOps Organization
+          type: string
+          default: "dxcorg" # Change to your default AzDO org
+        project:
+          title: Azure DevOps Project
+          type: string
+          default: "Infrastructure-Pipelines" # Change to your target project
+        pipelineId:
+          title: Pipeline ID
+          type: integer
+          default: 10 # Replace with the integer ID of your VM deployment pipeline in AzDO
+          description: The numerical ID of the build pipeline in Azure DevOps.
+
+  # 2. Execution Steps
+  steps:
+    # Step A: Register a representation of this VM in Backstage so it appears in your Software Catalog
+    - id: fetch-catalog-info
+      name: Generate Catalog Metadata
+      action: fetch:template
+      input:
+        url: ./skeleton
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+          vmName: ${{ parameters.vmName }}
+          location: ${{ parameters.location }}
+          vmSize: ${{ parameters.vmSize }}
+          osImage: ${{ parameters.osImage }}
+
+    - id: register-catalog
+      name: Register VM in Backstage Catalog
+      action: catalog:register
+      input:
+        catalogInfoUrl: 'memory://catalog-info.yaml' # Or register to a local git repo if persisting
+
+    # Step B: Trigger the actual Azure DevOps Pipeline
+    - id: run-azdo-pipeline
+      name: Trigger Azure DevOps VM Deployment Pipeline
+      action: azure:pipeline:run
+      input:
+        organization: ${{ parameters.organization }}
+        project: ${{ parameters.project }}
+        pipelineId: ${{ parameters.pipelineId }}
+        branch: 'main'
+        # These parameters are injected into your Azure DevOps YAML pipeline as variables/parameters
+        templateParameters:
+          vmName: ${{ parameters.vmName }}
+          location: ${{ parameters.location }}
+          vmSize: ${{ parameters.vmSize }}
+          osImage: ${{ parameters.osImage }}
+          adminUsername: ${{ parameters.adminUsername }}
+
+  # 3. Output Links
+  output:
+    links:
+      - title: View Pipeline Run in Azure DevOps
+        url: ${{ steps['run-azdo-pipeline'].output.pipelineUrl }}
+        icon: dashboard
+      - title: Open VM in Backstage Catalog
+        icon: catalog
+        entityRef: ${{ steps['register-catalog'].output.entityRef }}
+      - title: Azure Portal - Virtual Machines
+        url: https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Compute%2FVirtualMachines
+    text:
+      - title: '🚀 Deployment Pipeline Triggered!'
+      - content: |
+          Your request to deploy **${{ parameters.vmName }}** (${{ parameters.vmSize }}) in **${{ parameters.location }}** has been successfully sent to Azure DevOps!
+          
+          **What happens next?**
+          1. Azure DevOps is executing Terraform/Bicep to provision the VM.
+          2. You can monitor the live build logs by clicking the **"View Pipeline Run in Azure DevOps"** link above.
+          3. Once the pipeline completes, your VM will be accessible in the Azure Portal under the specified resource group.

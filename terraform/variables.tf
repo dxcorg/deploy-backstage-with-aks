@@ -152,6 +152,13 @@ variable "github_token" {
   default     = ""
 }
 
+variable "azure_devops_token" {
+  description = "Azure DevOps Personal Access Token for scaffolder and integrations"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "postgresql_enabled" {
   description = "Deploy PostgreSQL as subchart (recommended for dev/demo)"
   type        = bool
