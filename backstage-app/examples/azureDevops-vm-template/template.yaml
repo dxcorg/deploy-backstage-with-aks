@@ -118,7 +118,7 @@ spec:
 
   # 2. Execution Steps
   steps:
-    # Step A: Register a representation of this VM in Backstage so it appears in your Software Catalog
+# Step A: Register a representation of this VM in Backstage so it appears in your Software Catalog
     - id: fetch-catalog-info
       name: Generate Catalog Metadata
       action: fetch:template
@@ -132,6 +132,10 @@ spec:
           location: ${{ parameters.location }}
           vmSize: ${{ parameters.vmSize }}
           osImage: ${{ parameters.osImage }}
+          # Required so catalog-info.yaml can construct the AzDO link without defaults:
+          organization: ${{ parameters.organization }}
+          project: ${{ parameters.project }}
+          pipelineId: ${{ parameters.pipelineId }}
 
     - id: register-catalog
       name: Register VM in Backstage Catalog

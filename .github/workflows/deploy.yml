@@ -143,9 +143,11 @@ jobs:
           TF_VAR_github_client_id: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_ID }}
           TF_VAR_github_client_secret: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_SECRET }}
           TF_VAR_github_token: ${{ secrets.SCAFFOLDER_GITHUB_TOKEN }}
+          TF_VAR_azure_devops_token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
         run: |
           terraform apply -auto-approve \
             -target=random_password.postgresql \
+            -var="azure_devops_token=${TF_VAR_azure_devops_token:-}" \
             -var="resource_group_name=${{ steps.tfvars.outputs.resource_group }}" \
             -var="deploy_aks=${{ steps.tfvars.outputs.deploy_aks }}" \
             -var="existing_aks_name=${{ steps.tfvars.outputs.existing_aks_name }}" \
@@ -171,11 +173,13 @@ jobs:
           TF_VAR_github_client_id: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_ID }}
           TF_VAR_github_client_secret: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_SECRET }}
           TF_VAR_github_token: ${{ secrets.SCAFFOLDER_GITHUB_TOKEN }}
+          TF_VAR_azure_devops_token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
         run: |
           terraform apply -auto-approve \
             -target=azurerm_resource_group.main \
             -target=azurerm_kubernetes_cluster.main \
             -target=random_password.postgresql \
+            -var="azure_devops_token=${TF_VAR_azure_devops_token:-}" \
             -var="resource_group_name=${{ steps.tfvars.outputs.resource_group }}" \
             -var="deploy_aks=${{ steps.tfvars.outputs.deploy_aks }}" \
             -var="existing_aks_name=${{ steps.tfvars.outputs.existing_aks_name }}" \

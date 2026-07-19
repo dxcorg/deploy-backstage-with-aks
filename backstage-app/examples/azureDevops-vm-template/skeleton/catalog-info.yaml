@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: ${{ values.name }}
+  description: ${{ values.description }}
+  tags:
+    - azure
+    - vm
+    - infrastructure
+    - terraform
+    - ${{ values.location }}
+    - ${{ values.osImage }}
+  links:
+    - url: https://dev.azure.com/${{ values.organization }}/${{ values.project }}/_build?definitionId=${{ values.pipelineId }}
+      title: Azure DevOps Provisioning Pipeline
+      icon: dashboard
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    
+spec:
+  type: virtual-machine
+  owner: ${{ values.owner }}
+  system: azure-infrastructure
