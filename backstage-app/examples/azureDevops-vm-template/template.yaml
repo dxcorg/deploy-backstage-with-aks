@@ -137,11 +137,11 @@ spec:
           project: ${{ parameters.project }}
           pipelineId: ${{ parameters.pipelineId }}
 
-    - id: register-catalog
-      name: Register VM in Backstage Catalog
-      action: catalog:register
-      input:
-        catalogInfoUrl: 'memory://catalog-info.yaml' # Or register to a local git repo if persisting
+    #- id: register-catalog
+    #  name: Register VM in Backstage Catalog
+    #  action: catalog:register
+    #  input:
+    #    catalogInfoUrl: 'memory://catalog-info.yaml' # Or register to a local git repo if persisting
 
     # Step B: Trigger the actual Azure DevOps Pipeline
     - id: run-azdo-pipeline
