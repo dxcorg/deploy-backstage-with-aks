@@ -219,7 +219,7 @@ jobs:
           TF_VAR_azure_devops_token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
         run: |
           terraform apply -auto-approve \
-            -var="azure_devops_token=${TF_VAR_azure_devops_token:-}"
+            -var="azure_devops_token=${TF_VAR_azure_devops_token:-}" \
             -var="resource_group_name=${{ steps.tfvars.outputs.resource_group }}" \
             -var="deploy_aks=${{ steps.tfvars.outputs.deploy_aks }}" \
             -var="existing_aks_name=${{ steps.tfvars.outputs.existing_aks_name }}" \
@@ -243,8 +243,9 @@ jobs:
         env:
           TF_VAR_postgresql_password: ${{ secrets.POSTGRESQL_PASSWORD }}
           TF_VAR_github_client_id: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_ID }}
-          TF_VAR_github_token: ${{ secrets.SCAFFOLDER_GITHUB_TOKEN }}
           TF_VAR_github_client_secret: ${{ secrets.BACKSTAGE_OAUTH_CLIENT_SECRET }}
+          TF_VAR_github_token: ${{ secrets.SCAFFOLDER_GITHUB_TOKEN }}
+          TF_VAR_azure_devops_token: ${{ secrets.AZURE_DEVOPS_TOKEN }}
         run: |
           for i in $(seq 1 30); do
             LB_IP=$(kubectl get svc backstage -n backstage -o jsonpath='{.status.loadBalancer.ingress[0].ip}' 2>/dev/null || true)
@@ -259,6 +260,7 @@ jobs:
           BASE_URL="http://backstage.${LB_IP}.nip.io:7007"
           echo "Using baseUrl: $BASE_URL"
           terraform apply -auto-approve \
+            -var="azure_devops_token=${TF_VAR_azure_devops_token:-}" \
             -var="resource_group_name=${{ steps.tfvars.outputs.resource_group }}" \
             -var="deploy_aks=${{ steps.tfvars.outputs.deploy_aks }}" \
             -var="existing_aks_name=${{ steps.tfvars.outputs.existing_aks_name }}" \
