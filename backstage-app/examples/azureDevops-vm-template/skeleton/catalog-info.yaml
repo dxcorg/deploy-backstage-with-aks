@@ -1,15 +1,16 @@
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
-  name: ${{ values.name }}
+  # Force lowercase and replace spaces with hyphens to guarantee schema compliance
+  name: ${{ values.name | lower | replace(" ", "-") }}
   description: ${{ values.description }}
   tags:
     - azure
     - vm
     - infrastructure
     - terraform
-    - ${{ values.location }}
-    - ${{ values.osImage }}
+    - ${{ values.location | lower | replace(" ", "-") }}
+    - ${{ values.osImage | lower | replace(" ", "-") }}
   links:
     - url: https://dev.azure.com/${{ values.organization }}/${{ values.project }}/_build?definitionId=${{ values.pipelineId }}
       title: Azure DevOps Provisioning Pipeline
@@ -19,5 +20,6 @@ metadata:
     
 spec:
   type: virtual-machine
-  owner: ${{ values.owner }}
+  # Ensure the owner maps to a valid reference structure
+  owner: ${{ values.owner | lower | replace(" ", "-") }}
   system: azure-infrastructure
