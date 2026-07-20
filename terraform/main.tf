@@ -66,6 +66,11 @@ locals {
   kube_client_cert = local.use_kubeconfig ? null : base64decode(var.deploy_aks ? data.azurerm_kubernetes_cluster.main[0].kube_config[0].client_certificate : data.azurerm_kubernetes_cluster.existing[0].kube_config[0].client_certificate)
   kube_client_key  = local.use_kubeconfig ? null : base64decode(var.deploy_aks ? data.azurerm_kubernetes_cluster.main[0].kube_config[0].client_key : data.azurerm_kubernetes_cluster.existing[0].kube_config[0].client_key)
   kube_ca_cert     = local.use_kubeconfig ? null : base64decode(var.deploy_aks ? data.azurerm_kubernetes_cluster.main[0].kube_config[0].cluster_ca_certificate : data.azurerm_kubernetes_cluster.existing[0].kube_config[0].cluster_ca_certificate)
+  extra_env_secrets = concat(
+    var.github_auth_enabled ? [kubernetes_secret.github_auth[0].metadata[0].name] : [],
+    var.github_token != "" ? [kubernetes_secret.github_token[0].metadata[0].name] : [],
+    var.azure_devops_token != "" ? [kubernetes_secret.azure_devops_token[0].metadata[0].name] : [],
+  )
 }
 
 provider "kubernetes" {
@@ -130,6 +135,24 @@ resource "kubernetes_secret" "github_token" {
 
   data = {
     GITHUB_TOKEN = var.github_token
+  }
+
+  type = "Opaque"
+}
+
+# ------------------------------------------------------------------------------
+# Azure DevOps Token secret (for Azure DevOps scaffolder/integrations)
+# ------------------------------------------------------------------------------
+resource "kubernetes_secret" "azure_devops_token" {
+  count = var.azure_devops_token != "" ? 1 : 0
+
+  metadata {
+    name      = "${var.backstage_release_name}-azure-devops-token"
+    namespace = kubernetes_namespace.backstage.metadata[0].name
+  }
+
+  data = {
+    AZURE_DEVOPS_TOKEN = var.azure_devops_token
   }
 
   type = "Opaque"
@@ -258,22 +281,12 @@ resource "helm_release" "backstage" {
   }
 
 
-  # GitHub auth credentials (from Kubernetes secret)
+  # All optional env-var secrets (auto-indexed)
   dynamic "set" {
-    for_each = var.github_auth_enabled ? [1] : []
+    for_each = local.extra_env_secrets
     content {
-      name  = "backstage.extraEnvVarsSecrets[0]"
-      value = kubernetes_secret.github_auth[0].metadata[0].name
-    }
-  }
-
-  # GitHub token for scaffolder/integrations (from Kubernetes secret)
-  # Use index 0 if github_auth is disabled, index 1 if enabled
-  dynamic "set" {
-    for_each = var.github_token != "" ? [1] : []
-    content {
-      name  = var.github_auth_enabled ? "backstage.extraEnvVarsSecrets[1]" : "backstage.extraEnvVarsSecrets[0]"
-      value = kubernetes_secret.github_token[0].metadata[0].name
+      name  = "backstage.extraEnvVarsSecrets[${set.key}]"
+      value = set.value
     }
   }
 
