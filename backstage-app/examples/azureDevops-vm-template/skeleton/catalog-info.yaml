@@ -1,7 +1,6 @@
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
-  # Force lowercase and replace spaces with hyphens to guarantee schema compliance
   name: ${{ values.name | lower | replace(" ", "-") }}
   description: ${{ values.description }}
   tags:
@@ -17,9 +16,12 @@ metadata:
       icon: dashboard
   annotations:
     backstage.io/techdocs-ref: dir:.
+    # Dynamically map organization and project from Scaffolder parameters
+    dev.azure.com/project: "${{ values.organization }}/${{ values.project }}"
+    # Optionally map the pipeline ID if your specific plugin version supports it
+    dev.azure.com/build-definition: "${{ values.pipelineId }}"
     
 spec:
   type: virtual-machine
-  # Ensure the owner maps to a valid reference structure
   owner: ${{ values.owner | lower | replace(" ", "-") }}
   system: azure-infrastructure

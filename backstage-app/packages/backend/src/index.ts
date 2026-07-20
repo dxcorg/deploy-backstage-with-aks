@@ -66,6 +66,9 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 // azure devops plugin
 backend.add(import('@backstage-community/plugin-azure-devops-backend'));
 
+// Azure DevOps Scaffolder actions module
+backend.add(import('@backstage-community/plugin-scaffolder-backend-module-azure-devops'));
+
 // notifications and signals plugins
 backend.add(import('@backstage/plugin-notifications-backend'));
 backend.add(import('@backstage/plugin-signals-backend'));
