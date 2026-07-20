@@ -112,8 +112,8 @@ spec:
           default: "Infrastructure-Pipelines" # Change to your target project
         pipelineId:
           title: Pipeline ID
-          type: integer
-          default: 10 # Replace with the integer ID of your VM deployment pipeline in AzDO
+          type: string
+          default: "10" # Replace with the string ID of your VM deployment pipeline in AzDO
           description: The numerical ID of the build pipeline in Azure DevOps.
 
   # 2. Execution Steps
