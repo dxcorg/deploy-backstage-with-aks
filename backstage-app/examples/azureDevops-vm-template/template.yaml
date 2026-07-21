@@ -51,49 +51,51 @@ spec:
         location:
           title: Azure Region
           type: string
-          default: "westeurope"
+          default: "eastus"
           enum:
-            - "westeurope"
             - "eastus"
+            - "westeurope"
             - "northeurope"
             - "uaenorth"
           enumNames:
-            - "West Europe"
             - "East US"
+            - "West Europe"
             - "North Europe"
             - "UAE North"
         vmSize:
           title: Virtual Machine Size (SKU)
           type: string
-          default: "Standard_B2s"
+          default: "Standard_B2s_v2"
           enum:
             - "Standard_B1s"
             - "Standard_B2s"
+            - "Standard_B2s_v2"
             - "Standard_D2s_v3"
             - "Standard_D4s_v3"
           enumNames:
-            - "Standard B1s (1 vCPU, 1 GB RAM - Burstable)"
-            - "Standard B2s (2 vCPU, 4 GB RAM - Burstable)"
-            - "Standard D2s v3 (2 vCPU, 8 GB RAM - General Purpose)"
-            - "Standard D4s v3 (4 vCPU, 16 GB RAM - General Purpose)"
+            - "Standard B1s (1 vCPU, 1 GB RAM)"
+            - "Standard B2s (2 vCPU, 4 GB RAM)"
+            - "Standard B2s v2 (2 vCPU, 4 GB RAM)"
+            - "Standard D2s v3 (2 vCPU, 8 GB RAM)"
+            - "Standard D4s v3 (4 vCPU, 16 GB RAM)"
         osImage:
           title: Operating System
           type: string
-          default: "ubuntu-2204"
+          default: "ubuntu-2404"
           enum:
+            - "ubuntu-2404"
             - "ubuntu-2204"
-            - "ubuntu-2004"
             - "windows-2022"
             - "windows-2019"
           enumNames:
+            - "Ubuntu Linux 24.04 LTS"
             - "Ubuntu Linux 22.04 LTS"
-            - "Ubuntu Linux 20.04 LTS"
             - "Windows Server 2022 Datacenter"
             - "Windows Server 2019 Datacenter"
         adminUsername:
           title: Admin Username
           type: string
-          default: "azureadmin"
+          default: "azureuser"
           description: Username for SSH or RDP access.
 
     - title: Azure DevOps Pipeline Configuration
@@ -137,11 +139,22 @@ spec:
           project: ${{ parameters.project }}
           pipelineId: ${{ parameters.pipelineId }}
 
-    #- id: register-catalog
-    #  name: Register VM in Backstage Catalog
-    #  action: catalog:register
-    #  input:
-    #    catalogInfoUrl: 'memory://catalog-info.yaml' # Or register to a local git repo if persisting
+    - id: publish-azure
+      name: Publish to Azure DevOps
+      action: publish:azure
+      input:
+        allowedOwners:
+          - ${{ parameters.organization }}
+        projectName: ${{ parameters.project }}
+        repoUrl: "dev.azure.com?organization=${{ parameters.organization }}&project=${{ parameters.project }}&repo=${{ parameters.name }}"
+        branchName: main
+
+    - id: register-catalog
+      name: Register in Backstage Software Catalog
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish-azure'].output.repoContentsUrl }}
+        catalogInfoPath: '/catalog-info.yaml'
 
     # Step B: Trigger the actual Azure DevOps Pipeline
     - id: run-azdo-pipeline
