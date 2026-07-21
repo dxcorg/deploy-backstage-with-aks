@@ -51,11 +51,11 @@ integrations:
         - personalAccessToken: ${AZURE_DEVOPS_TOKEN}
         # Personal Access Token with Build (Read) and Code (Read) scopes
         # You can create a token at: https://dev.azure.com/{organization}/_usersSettings/tokens
-        
+
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local' # Alternatives - 'local'
   publisher:
     type: 'local' # Alternatives include 'googleGcs', 'awsS3', and other supported publishers. See configuration documentation for the full list.
     
