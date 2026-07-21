@@ -143,11 +143,9 @@ spec:
       name: Publish to Azure DevOps
       action: publish:azure
       input:
-        allowedOwners:
-          - ${{ parameters.organization }}
-        projectName: ${{ parameters.project }}
         repoUrl: "dev.azure.com?organization=${{ parameters.organization }}&project=${{ parameters.project }}&repo=${{ parameters.name }}"
-        branchName: main
+        defaultBranch: main
+        gitCommitMessage: "Initial commit for ${{ parameters.name }} VM deployment"
 
     - id: register-catalog
       name: Register in Backstage Software Catalog

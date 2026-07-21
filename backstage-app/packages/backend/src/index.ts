@@ -15,6 +15,7 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 
 // scaffolder plugin
 backend.add(import('@backstage/plugin-scaffolder-backend'));
+
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
 backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
@@ -65,6 +66,9 @@ backend.add(import('@backstage/plugin-kubernetes-backend'));
 
 // azure devops plugin
 backend.add(import('@backstage-community/plugin-azure-devops-backend'));
+
+// Azure Scaffolder actions module
+backend.add(import('@backstage/plugin-scaffolder-backend-module-azure')); 
 
 // Azure DevOps Scaffolder actions module
 backend.add(import('@backstage-community/plugin-scaffolder-backend-module-azure-devops'));
